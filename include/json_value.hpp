@@ -52,6 +52,11 @@ public:
     }
 
     auto &arr = std::get<JsonArray>(m_value);
+
+    if (index >= arr.size()) {
+      arr.resize(index + 1);
+    }
+  
     return arr[index];
   }
   
