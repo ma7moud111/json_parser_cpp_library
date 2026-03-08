@@ -48,3 +48,24 @@ std::string CJsonSerializer::serialize_object(const CJsonValue &value) {
 
   return result;
 }
+
+
+std::string CJsonSerializer::serialize_array(const CJsonValue &value) {
+  const auto &arr = std::get<CJsonValue::JsonArray>(value.get_value());
+
+  std::string result = "[";
+  bool first = true;
+
+  for (const auto &val : arr) {
+    if (!first)
+      result += ",";
+
+    result += serialize(val);
+
+    first = false;
+  }
+
+  result += "]";
+
+  return result;
+}
