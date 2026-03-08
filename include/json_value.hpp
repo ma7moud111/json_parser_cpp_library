@@ -21,9 +21,15 @@ public:
   CJsonValue(double v) : m_value(v){}
   CJsonValue(bool v) : m_value(v){}
   CJsonValue(const std::string &v) : m_value(v){}
-  CJsonValue(const char *v) : m_value(std::string(v)){}
+  CJsonValue(const char *v) : m_value(std::string(v)) {}
 
-  bool is_object() const { return m_value.index() == 5; }
+  const std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject, JsonArray>& get_value(){
+    return m_value;
+  }
+
+  bool is_object() const {
+    return m_value.index() == 5;
+  }
 
   bool is_null() const { return m_value.index() == 0; }
 
