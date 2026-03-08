@@ -23,7 +23,7 @@ public:
   CJsonValue(const std::string &v) : m_value(v){}
   CJsonValue(const char *v) : m_value(std::string(v)) {}
 
-  const std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject, JsonArray>& get_value(){
+  const std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject, JsonArray>& get_value() const {
     return m_value;
   }
 
