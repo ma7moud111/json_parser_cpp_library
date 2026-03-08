@@ -7,10 +7,11 @@
 
 class CJsonValue {
 
-private:
+public:
   using JsonObject = std::map<std::string, CJsonValue>;
   using JsonArray = std::vector<CJsonValue>;
 
+private:
   std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject,
                JsonArray>
       m_value;
