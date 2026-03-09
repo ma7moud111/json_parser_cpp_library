@@ -39,7 +39,7 @@ std::string CJsonSerializer::serialize_object(const CJsonValue &value) {
       result += ",";
     }
 
-    result += "\"" + key + "\"";
+    result += "\"" + key + "\":";
     result += serialize(val);
 
     first = false;
