@@ -1,16 +1,16 @@
 #pragma once
 
 #include "json_value.hpp"
-#include <cstddef>
 #include <string>
 
 class CJsonParser {
-
 private:
-  std::string m_text;
-  size_t m_pos;
+  std::string text;
+  size_t pos = 0;
 
 public:
+  CJsonParser(const std::string &input);
+
   CJsonValue parse();
 
 private:
@@ -19,7 +19,10 @@ private:
   CJsonValue parse_array();
   CJsonValue parse_string();
   CJsonValue parse_number();
+  CJsonValue parse_bool();
+  CJsonValue parse_null();
 
-  void skip_whitespaces();  
-
+  void skip_whitespace();
+  char peek() const;
+  char consume();
 };
