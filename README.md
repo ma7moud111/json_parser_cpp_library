@@ -275,19 +275,22 @@ class CJsonSerializer {
 }
 
 class CSimpleJson {
-  +parse(text)
-  +stringify(value)
+  +read_str(text)
+  +write_str(value)
+  +read_file(path)
+  +write_file(value, path)
+  +is_valid(text)
 }
 
 class jcli {
   +main(argc, argv)
 }
 
-CJsonParser --|> CJsonValue
-CJsonSerializer --|> CJsonValue
-CSimpleJson --|> CJsonParser
-CSimpleJson --|> CJsonSerializer
-jcli --|> CSimpleJson
+CSimpleJson ..> CJsonParser
+CSimpleJson ..> CJsonSerializer
+CJsonParser ..> CJsonValue
+CJsonSerializer ..> CJsonValue
+jcli ..> CSimpleJson
 ```
 
 ## Example JSON
