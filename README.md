@@ -1,1 +1,483 @@
-### A simple Json File Parser Library that built with C++ 
+# SimpleJSON
+
+A lightweight JSON library written in **modern C++ (C++17)** that provides:
+
+* JSON parsing
+* JSON serialization
+* Programmatic JSON construction
+* A simple CLI query tool (similar to a minimal `jq`)
+
+The goal of this project is to demonstrate how a JSON library can be implemented **from scratch** using modern C++ features such as `std::variant`, while keeping the design **clean and easy to understand**.
+
+This project is intended as a **learning project and portfolio piece**, showcasing C++ design, parsing logic, and library structure.
+
+---
+
+# Features
+
+* JSON parsing
+* JSON serialization
+* Pretty printed JSON output
+* JSON object and array support
+* JSON value manipulation
+* Simple query CLI tool
+* Minimal dependencies
+* Clean modular architecture
+
+Supported JSON types:
+
+* `null`
+* `int`
+* `double`
+* `bool`
+* `string`
+* `object`
+* `array`
+
+---
+
+# Project Structure
+
+```
+simple_json/
+│
+├── include/
+│   ├── json_value.hpp
+│   ├── json_parser.hpp
+│   ├── json_serializer.hpp
+│   └── simple_json.hpp
+│
+├── src/
+│   ├── json_parser.cpp
+│   ├── json_serializer.cpp
+│   └── simple_json.cpp
+│
+├── cli/
+│   └── json_cli.cpp
+│
+├── tests/
+│   └── test_json.cpp
+│
+├── build/
+│
+├── Makefile
+└── README.md
+```
+
+---
+
+# Requirements
+
+This project only requires a **modern C++ compiler** and **make**.
+
+Minimum requirements:
+
+* C++17 compatible compiler
+* GNU Make
+
+Recommended environment:
+
+* Linux (Ubuntu, Debian, Fedora, etc.)
+* macOS
+* WSL (Windows Subsystem for Linux)
+
+---
+
+# Installing Required Tools
+
+## Ubuntu / Debian
+
+```
+sudo apt update
+sudo apt install build-essential
+```
+
+This installs:
+
+* `g++`
+* `make`
+* standard C++ libraries
+
+---
+
+## Arch Linux
+
+```
+sudo pacman -S base-devel
+```
+
+---
+
+## Fedora
+
+```
+sudo dnf install gcc-c++ make
+```
+
+---
+
+## macOS
+
+Install Xcode Command Line Tools:
+
+```
+xcode-select --install
+```
+
+---
+
+# Building the Project
+
+Clone the repository:
+
+```
+git clone <your_repo_url>
+cd simple_json
+```
+
+Compile the project:
+
+```
+make
+```
+
+Build artifacts will appear inside the **build/** directory.
+
+---
+
+# Cleaning Build Files
+
+```
+make clean
+```
+
+---
+
+# Running Tests
+
+After building:
+
+```
+./build/test_json
+```
+
+This runs the example tests demonstrating:
+
+* JSON creation
+* JSON serialization
+* JSON parsing
+
+---
+
+# Example Usage (Library)
+
+## Building JSON Programmatically
+
+```cpp
+CJsonValue json;
+
+json["name"] = "Mahmoud";
+json["age"] = 24;
+
+json["skills"][0] = "C++";
+json["skills"][1] = "Linux";
+
+json["active"] = true;
+
+std::cout << CSimpleJson::stringify(json) << std::endl;
+```
+
+Output:
+
+```
+{
+  "name": "Mahmoud",
+  "age": 24,
+  "skills": [
+    "C++",
+    "Linux"
+  ],
+  "active": true
+}
+```
+
+---
+
+## Parsing JSON
+
+```
+std::string text = R"(
+{
+    "name": "Mahmoud",
+    "age": 24,
+    "skills": ["C++","Linux"]
+}
+)";
+
+CJsonValue json = CSimpleJson::parse(text);
+```
+
+---
+
+# Command Line Tool
+
+A minimal CLI tool is provided to demonstrate querying JSON files.
+
+Build the CLI:
+
+```
+make json_cli
+```
+
+Run:
+
+```
+./build/json_cli file.json query
+```
+
+---
+
+## Architecture UML
+
+The following diagram shows the architecture of the JSON library.
+
+```mermaid
+classDiagram
+
+class CJsonValue {
+  variant m_value
+  +is_null()
+  +is_object()
+  +is_array()
+  +is_string()
+  +is_number()
+  +is_bool()
+  +operator[](string)
+  +operator[](size_t)
+}
+
+class CJsonParser {
+  string m_text
+  size_t m_pos
+  +parse()
+  -parse_value()
+  -parse_object()
+  -parse_array()
+  -parse_string()
+  -parse_number()
+  -parse_bool()
+}
+
+class CJsonSerializer {
+  +serialize(value)
+  -serialize_object(value)
+  -serialize_array(value)
+}
+
+class CSimpleJson {
+  +parse(text)
+  +stringify(value)
+}
+
+class JsonCLI {
+  +main(argc, argv)
+}
+
+CJsonParser -up-|> CJsonValue
+CJsonSerializer -up-|> CJsonValue
+CSimpleJson -up-|> CJsonParser
+CSimpleJson -up-|> CJsonSerializer
+JsonCLI -up-|> CSimpleJson
+```
+
+## Example JSON
+
+`data.json`
+
+```
+{
+  "name": "Mahmoud",
+  "age": 24,
+  "skills": ["C++","Linux"]
+}
+```
+
+---
+
+## Query Examples
+
+Get value:
+
+```
+./build/json_cli data.json name
+```
+
+Output
+
+```
+"Mahmoud"
+```
+
+---
+
+Get array element:
+
+```
+./build/json_cli data.json skills.0
+```
+
+Output
+
+```
+"C++"
+```
+
+---
+
+Get entire object:
+
+```
+./build/json_cli data.json skills
+```
+
+Output
+
+```
+[
+  "C++",
+  "Linux"
+]
+```
+
+Query syntax supports:
+
+```
+key
+key.key
+key.index
+key.key.index
+```
+
+Example:
+
+```
+user.address.city
+skills.1
+```
+
+This is intentionally **very simple** and serves only as a demonstration tool.
+
+---
+
+# Implementation Details
+
+The library is composed of several core components.
+
+---
+
+## CJsonValue
+
+Represents a JSON value using `std::variant`.
+
+```
+std::variant<
+    std::nullptr_t,
+    int,
+    double,
+    bool,
+    std::string,
+    JsonObject,
+    JsonArray
+>
+```
+
+This allows safe storage of different JSON types.
+
+---
+
+## CJsonParser
+
+Responsible for converting JSON text into a `CJsonValue`.
+
+Parsing functions include:
+
+* `parse_object()`
+* `parse_array()`
+* `parse_string()`
+* `parse_number()`
+* `parse_bool()`
+
+The parser works by iterating through the input text character by character.
+
+---
+
+## CJsonSerializer
+
+Responsible for converting `CJsonValue` objects into JSON text.
+
+Features:
+
+* pretty printed output
+* indentation
+* recursive serialization
+
+---
+
+## CSimpleJson
+
+Provides the **public API** for the library.
+
+```
+CJsonValue parse(const std::string&)
+std::string stringify(const CJsonValue&)
+```
+
+This separates the **internal implementation** from the **public interface**.
+
+---
+
+# Design Goals
+
+This project focuses on:
+
+* simplicity
+* readability
+* minimal dependencies
+* modern C++ practices
+
+It avoids heavy abstractions to keep the code understandable.
+
+---
+
+# Limitations
+
+This project intentionally keeps the implementation simple.
+
+Not implemented:
+
+* full JSON specification edge cases
+* advanced error recovery
+* escape sequence handling
+* full jq query language
+
+The CLI tool is intentionally **minimal**.
+
+---
+
+# Future Improvements
+
+Possible improvements include:
+
+* better error messages
+* streaming JSON parser
+* escape character support
+* Unicode support
+* improved CLI queries
+* performance optimizations
+* iterator support
+
+---
+
+# License
+
+This project is open source and intended for educational use.
