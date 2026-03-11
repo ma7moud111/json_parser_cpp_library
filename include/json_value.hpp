@@ -2,14 +2,14 @@
 
 #include <cstddef>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <variant>
 #include <vector>
 
 class CJsonValue {
 
 public:
-  using JsonObject = std::map<std::string, CJsonValue>;
+  using JsonObject = std::unordered_map<std::string, CJsonValue>;
   using JsonArray = std::vector<CJsonValue>;
 
 private:
