@@ -283,11 +283,11 @@ class JsonCLI {
   +main(argc, argv)
 }
 
-CJsonParser -up-|> CJsonValue
-CJsonSerializer -up-|> CJsonValue
-CSimpleJson -up-|> CJsonParser
-CSimpleJson -up-|> CJsonSerializer
-JsonCLI -up-|> CSimpleJson
+CJsonParser --|> CJsonValue
+CJsonSerializer --|> CJsonValue
+CSimpleJson --|> CJsonParser
+CSimpleJson --> CJsonSerializer
+JsonCLI --> CSimpleJson
 ```
 
 ## Example JSON
