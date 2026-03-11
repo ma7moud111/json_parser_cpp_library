@@ -131,7 +131,7 @@ xcode-select --install
 Clone the repository:
 
 ```
-git clone <your_repo_url>
+git clone https://github.com/ma7moud111/json_parser_cpp_library.git
 cd json_parser_cpp_library
 ```
 
