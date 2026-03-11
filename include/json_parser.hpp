@@ -5,8 +5,8 @@
 
 class CJsonParser {
 private:
-  std::string text;
-  size_t pos = 0;
+  std::string m_text;
+  size_t m_pos = 0;
 
 public:
   CJsonParser(const std::string &input);
@@ -17,7 +17,7 @@ private:
   CJsonValue parse_value();
   CJsonValue parse_object();
   CJsonValue parse_array();
-  CJsonValue parse_string();
+  std::string parse_string();
   CJsonValue parse_number();
   CJsonValue parse_bool();
   CJsonValue parse_null();
