@@ -184,7 +184,9 @@ json["skills"][1] = "Linux";
 
 json["active"] = true;
 
-std::cout << CSimpleJson::stringify(json) << std::endl;
+CSimpleJson sj;
+
+std::cout << sj.write_str(json) << std::endl;
 ```
 
 Output:
@@ -214,7 +216,15 @@ std::string text = R"(
 }
 )";
 
-CJsonValue json = CSimpleJson::parse(text);
+CSimpleJson sj;
+
+auto result = sj.read_str(text);
+
+if (result)
+{
+    CJsonValue json = *result;
+    std::cout << sj.write_str(json) << std::endl;
+}
 ```
 
 ---
@@ -431,8 +441,11 @@ Features:
 Provides the **public API** for the library.
 
 ```
-CJsonValue parse(const std::string&)
-std::string stringify(const CJsonValue&)
+std::optional<CJsonValue> read_str(const std::string& text)
+std::string write_str(const CJsonValue& value)
+std::optional<CJsonValue> read_file(const std::string& path)
+bool write_file(const CJsonValue& value, const std::string& path)
+bool is_valid(const std::string& text)
 ```
 
 This separates the **internal implementation** from the **public interface**.
