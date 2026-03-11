@@ -44,7 +44,6 @@ build-*/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
 install_manifest.txt 
 compile_commands.json
 
@@ -64,6 +63,7 @@ vcpkg_installed/
 Testing/
 .cache/
 
+.vscode/
 example.json
 random.json
 main.cpp
