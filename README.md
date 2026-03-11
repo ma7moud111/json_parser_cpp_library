@@ -286,8 +286,8 @@ class JsonCLI {
 CJsonParser --|> CJsonValue
 CJsonSerializer --|> CJsonValue
 CSimpleJson --|> CJsonParser
-CSimpleJson --> CJsonSerializer
-JsonCLI --> CSimpleJson
+CSimpleJson --|> CJsonSerializer
+JsonCLI --|> CSimpleJson
 ```
 
 ## Example JSON
