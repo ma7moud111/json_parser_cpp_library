@@ -39,7 +39,7 @@ Supported JSON types:
 # Project Structure
 
 ```
-simple_json/
+json_parser_cpp_library/
 │
 ├── include/
 │   ├── json_value.hpp
@@ -52,8 +52,8 @@ simple_json/
 │   ├── json_serializer.cpp
 │   └── simple_json.cpp
 │
-├── cli/
-│   └── json_cli.cpp
+├── tools/
+│   └── jcli.cpp
 │
 ├── tests/
 │   └── test_json.cpp
@@ -132,7 +132,7 @@ Clone the repository:
 
 ```
 git clone <your_repo_url>
-cd simple_json
+cd json_parser_cpp_library
 ```
 
 Compile the project:
@@ -226,13 +226,13 @@ A minimal CLI tool is provided to demonstrate querying JSON files.
 Build the CLI:
 
 ```
-make json_cli
+make jcli
 ```
 
 Run:
 
 ```
-./build/json_cli file.json query
+./build/jcli file.json query
 ```
 
 ---
@@ -279,7 +279,7 @@ class CSimpleJson {
   +stringify(value)
 }
 
-class JsonCLI {
+class jcli {
   +main(argc, argv)
 }
 
@@ -287,7 +287,7 @@ CJsonParser --|> CJsonValue
 CJsonSerializer --|> CJsonValue
 CSimpleJson --|> CJsonParser
 CSimpleJson --|> CJsonSerializer
-JsonCLI --|> CSimpleJson
+jcli --|> CSimpleJson
 ```
 
 ## Example JSON
@@ -309,7 +309,7 @@ JsonCLI --|> CSimpleJson
 Get value:
 
 ```
-./build/json_cli data.json name
+./build/jcli data.json name
 ```
 
 Output
@@ -323,7 +323,7 @@ Output
 Get array element:
 
 ```
-./build/json_cli data.json skills.0
+./build/jcli data.json skills.0
 ```
 
 Output
@@ -337,7 +337,7 @@ Output
 Get entire object:
 
 ```
-./build/json_cli data.json skills
+./build/jcli data.json skills
 ```
 
 Output
@@ -461,20 +461,6 @@ Not implemented:
 * full jq query language
 
 The CLI tool is intentionally **minimal**.
-
----
-
-# Future Improvements
-
-Possible improvements include:
-
-* better error messages
-* streaming JSON parser
-* escape character support
-* Unicode support
-* improved CLI queries
-* performance optimizations
-* iterator support
 
 ---
 
