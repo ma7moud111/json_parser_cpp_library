@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include <map>
 #include <variant>
@@ -53,7 +54,7 @@ public:
     return obj[key];
   }
 
-  CJsonValue &operator[](int index) {
+  CJsonValue &operator[](size_t index) {
     if (!is_array()) {
       m_value = JsonArray{};
     }
