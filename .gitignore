@@ -64,7 +64,6 @@ Testing/
 .cache/
 
 .vscode/
-example.json
-random.json
+*.json
 main.cpp
 main
