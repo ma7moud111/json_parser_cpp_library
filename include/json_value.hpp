@@ -9,7 +9,7 @@
 class CJsonValue {
 
 public:
-  using JsonObject = std::unordered_map<std::string, CJsonValue>;
+  using JsonObject = std::vector<std::pair<std::string, CJsonValue>>;
   using JsonArray = std::vector<CJsonValue>;
 
 private:
@@ -45,13 +45,20 @@ public:
 
   bool is_bool() const { return m_value.index() == 3; }
 
-  CJsonValue &operator[](std::string key) {
-    if (!is_object()) {
-      m_value = JsonObject{};
+  CJsonValue& operator[](const std::string& key){
+    if (!is_object())
+        m_value = JsonObject{};
+
+    auto& obj = std::get<JsonObject>(m_value);
+
+    for (auto& [k, v] : obj)
+    {
+        if (k == key)
+            return v;
     }
 
-    auto &obj = std::get<JsonObject>(m_value);
-    return obj[key];
+    obj.push_back({key, CJsonValue{}});
+    return obj.back().second;
   }
 
   CJsonValue &operator[](size_t index) {
