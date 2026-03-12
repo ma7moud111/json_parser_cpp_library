@@ -207,7 +207,7 @@ Output:
 
 ## Parsing JSON
 
-```
+```cpp
 std::string text = R"(
 {
     "name": "Mahmoud",
@@ -228,6 +228,91 @@ if (result)
 ```
 
 ---
+
+## Reading JSON From a File
+You can parse JSON directly from a file using ```read_file```.
+
+Example file ```data.json```
+
+```json
+{
+  "name": "Mahmoud",
+  "age": 24,
+  "skills": ["C++", "Linux"]
+}
+```
+
+```cpp
+#include <iostream>
+#include "simple_json.hpp"
+
+int main()
+{
+    CSimpleJson sj;
+
+    auto result = sj.read_file("data.json");
+
+    if (!result)
+    {
+        std::cout << "Failed to read JSON file" << std::endl;
+        return 1;
+    }
+
+    CJsonValue json = *result;
+
+    std::cout << sj.write_str(json) << std::endl;
+
+    return 0;
+}
+```
+
+---
+
+
+---
+
+## Writing JSON to a File
+You can create JSON programmatically and save it to a file using ```write_file```.
+
+
+
+```cpp
+#include <iostream>
+#include "simple_json.hpp"
+
+int main()
+{
+    CSimpleJson sj;
+
+    CJsonValue json;
+
+    json["project"] = "SimpleJSON";
+    json["version"] = 1;
+
+    if (sj.write_file(json, "output.json"))
+    {
+        std::cout << "JSON written successfully" << std::endl;
+    }
+    else
+    {
+        std::cout << "Failed to write JSON file" << std::endl;
+    }
+
+    return 0;
+}
+```
+
+Generated file ```output.json```
+
+```json
+{
+  "project": "SimpleJSON",
+  "version": 1
+}
+```
+
+---
+
 
 # Command Line Tool
 
