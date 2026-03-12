@@ -269,12 +269,8 @@ int main()
 ---
 
 
----
-
 ## Writing JSON to a File
 You can create JSON programmatically and save it to a file using ```write_file```.
-
-
 
 ```cpp
 #include <iostream>
@@ -310,6 +306,34 @@ Generated file ```output.json```
   "version": 1
 }
 ```
+--- 
+
+## Validating JSON
+You can check whether a string contains valid JSON using ```is_valid```.
+
+```cpp
+#include <iostream>
+#include "simple_json.hpp"
+
+int main()
+{
+    CSimpleJson sj;
+
+    std::string text = R"({"name":"Mahmoud"})";
+
+    if (sj.is_valid(text))
+    {
+        std::cout << "Valid JSON" << std::endl;
+    }
+    else
+    {
+        std::cout << "Invalid JSON" << std::endl;
+    }
+
+    return 0;
+}
+```
+
 
 ---
 
