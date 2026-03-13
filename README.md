@@ -364,15 +364,40 @@ The following diagram shows the architecture of the JSON library.
 classDiagram
 
 class CJsonValue {
-  variant m_value
-  +is_null()
-  +is_object()
-  +is_array()
-  +is_string()
-  +is_number()
-  +is_bool()
-  +operator[](string)
-  +operator[](size_t)
+
+  <<JSON Value Container>>
+
+  +JsonObject : vector<pair<string, CJsonValue>>
+  +JsonArray  : vector<CJsonValue>
+
+  +enum JsonType
+  +JSON_NULL
+  +JSON_INT
+  +JSON_DOUBLE
+  +JSON_BOOL
+  +JSON_STRING
+  +JSON_OBJECT
+  +JSON_ARRAY
+
+  -m_value : variant<nullptr_t,int,double,bool,string,JsonObject,JsonArray>
+
+  +CJsonValue()
+  +CJsonValue(int)
+  +CJsonValue(double)
+  +CJsonValue(bool)
+  +CJsonValue(string)
+  +CJsonValue(char*)
+
+  +get_value() const
+  +is_null() const
+  +is_object() const
+  +is_array() const
+  +is_string() const
+  +is_number() const
+  +is_bool() const
+
+  +operator[](string) CJsonValue&
+  +operator[](size_t) CJsonValue&
 }
 
 class CJsonParser {
