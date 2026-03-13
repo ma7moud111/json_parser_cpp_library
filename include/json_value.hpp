@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <string>
-#include <unordered_map>
 #include <variant>
 #include <vector>
 
@@ -10,19 +9,29 @@ class CJsonValue {
 
 public:
   using JsonObject = std::vector<std::pair<std::string, CJsonValue>>;
-  using JsonArray = std::vector<CJsonValue>;
+  using JsonArray  = std::vector<CJsonValue>;
 
 private:
-  std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject,
-               JsonArray>
+
+  enum ValueIndex {
+    JSON_NULL   = 0,
+    JSON_INT    = 1,
+    JSON_DOUBLE = 2,
+    JSON_BOOL   = 3,
+    JSON_STRING = 4,
+    JSON_OBJECT = 5,
+    JSON_ARRAY  = 6
+  };
+
+  std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject, JsonArray>
       m_value;
 
 public:
   CJsonValue() = default;
   CJsonValue(int v) : m_value(v) {}
-  CJsonValue(double v) : m_value(v){}
-  CJsonValue(bool v) : m_value(v){}
-  CJsonValue(const std::string &v) : m_value(v){}
+  CJsonValue(double v) : m_value(v) {}
+  CJsonValue(bool v) : m_value(v) {}
+  CJsonValue(const std::string &v) : m_value(v) {}
   CJsonValue(const char *v) : m_value(std::string(v)) {}
 
   const std::variant<std::nullptr_t, int, double, bool, std::string, JsonObject, JsonArray>& get_value() const {
@@ -30,22 +39,31 @@ public:
   }
 
   bool is_object() const {
-    return m_value.index() == 5;
+    return m_value.index() == JSON_OBJECT;
   }
 
-  bool is_null() const { return m_value.index() == 0; }
+  bool is_null() const {
+    return m_value.index() == JSON_NULL;
+  }
 
-  bool is_array() const { return m_value.index() == 6; }
+  bool is_array() const {
+    return m_value.index() == JSON_ARRAY;
+  }
 
-  bool is_string() const { return m_value.index() == 4; }
-  
+  bool is_string() const {
+    return m_value.index() == JSON_STRING;
+  }
+
   bool is_number() const {
-    return m_value.index() == 1 || m_value.index() == 2;
+    return m_value.index() == JSON_INT || m_value.index() == JSON_DOUBLE;
   }
 
-  bool is_bool() const { return m_value.index() == 3; }
+  bool is_bool() const {
+    return m_value.index() == JSON_BOOL;
+  }
 
-  CJsonValue& operator[](const std::string& key){
+  CJsonValue& operator[](const std::string& key)
+  {
     if (!is_object())
         m_value = JsonObject{};
 
@@ -61,18 +79,16 @@ public:
     return obj.back().second;
   }
 
-  CJsonValue &operator[](size_t index) {
-    if (!is_array()) {
-      m_value = JsonArray{};
-    }
+  CJsonValue& operator[](size_t index)
+  {
+    if (!is_array())
+        m_value = JsonArray{};
 
-    auto &arr = std::get<JsonArray>(m_value);
+    auto& arr = std::get<JsonArray>(m_value);
 
-    if (index >= arr.size()) {
-      arr.resize(index + 1);
-    }
-  
+    if (index >= arr.size())
+        arr.resize(index + 1);
+
     return arr[index];
   }
-  
 };
