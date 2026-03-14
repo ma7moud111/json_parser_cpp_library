@@ -1,106 +1,104 @@
 #include "../include/simple_json.hpp"
 #include <iostream>
 
-void test_parse_json() {
-  std::cout << "========== Test JSON Parse ==========" << std::endl;
+void parse_example()
+{
+    std::cout << "---- Parsing JSON from string ----\n";
 
-  std::string text = R"({
+    std::string text = R"({
         "name": "Mahmoud",
         "age": 24,
         "skills": ["C++", "Linux"],
         "active": true
     })";
 
-  auto json = CSimpleJson::read_str(text);
+    auto result = CSimpleJson::read_str(text);
 
-  if (!json) {
-    std::cout << "Failed to parse JSON" << std::endl;
-    return;
-  }
+    if (!result)
+    {
+        std::cout << "Parsing failed\n\n";
+        return;
+    }
 
-  std::cout << "Parsed JSON successfully" << std::endl;
-
-  std::cout << "Serialized JSON:" << std::endl;
-  std::cout << CSimpleJson::write_str(*json) << std::endl;
-
-  std::cout << std::endl;
+    std::cout << "JSON parsed successfully\n";
+    std::cout << CSimpleJson::write_str(*result) << "\n\n";
 }
 
-void test_build_json() {
-  std::cout << "========== Test Build JSON ==========" << std::endl;
+void build_example()
+{
+    std::cout << "---- Building JSON programmatically ----\n";
 
-  CJsonValue json;
+    CJsonValue root;
 
-  json["name"] = "Mahmoud";
-  json["age"] = 24;
+    root["name"] = "Mahmoud";
+    root["age"] = 24;
+    root["skills"][0] = "C++";
+    root["skills"][1] = "Linux";
+    root["active"] = true;
 
-  json["skills"][0] = "C++";
-  json["skills"][1] = "Linux";
-
-  json["active"] = true;
-
-  std::cout << "Generated JSON:" << std::endl;
-  std::cout << CSimpleJson::write_str(json) << std::endl;
-
-  std::cout << std::endl;
+    std::cout << CSimpleJson::write_str(root) << "\n\n";
 }
 
-void test_json_file() {
-  std::cout << "========== Test File IO ==========" << std::endl;
+void file_io_example()
+{
+    std::cout << "---- File read/write test ----\n";
 
-  CJsonValue json;
+    CJsonValue data;
 
-  json["name"] = "Mahmoud";
-  json["age"] = 24;
-  json["skills"][0] = "C++";
-  json["skills"][1] = "Linux";
-  json["skills"][2] = "Qt6";
-  json["company"] = "Coretech Innovation";
+    data["name"] = "Mahmoud";
+    data["age"] = 24;
+    data["skills"][0] = "C++";
+    data["skills"][1] = "Linux";
+    data["skills"][2] = "Qt6";
+    data["company"] = "Coretech Innovation";
 
-  if (CSimpleJson::write_file(json, "test.json"))
-    std::cout << "File written successfully" << std::endl;
-  else
-    std::cout << "Failed to write file" << std::endl;
+    if (CSimpleJson::write_file(data, "test.json"))
+        std::cout << "JSON written to file\n";
+    else
+        std::cout << "Failed to write file\n";
 
-  auto parsed = CSimpleJson::read_file("test.json");
+    auto loaded = CSimpleJson::read_file("test.json");
 
-  if (parsed)
-    std::cout << "File read successfully:" << std::endl
-              << CSimpleJson::write_str(*parsed) << std::endl;
-  else
-    std::cout << "Failed to read file" << std::endl;
+    if (loaded)
+    {
+        std::cout << "File loaded successfully\n";
+        std::cout << CSimpleJson::write_str(*loaded) << "\n";
+    }
+    else
+    {
+        std::cout << "Could not read file\n";
+    }
 
-  std::cout << std::endl;
+    std::cout << "\n";
 }
 
-void test_validation() {
-  std::cout << "========== Test JSON Validation ==========" << std::endl;
+void validation_example()
+{
+    std::cout << "---- JSON validation ----\n";
 
-  std::string valid = R"({"name":"Mahmoud","age":24})";
-  std::string invalid = R"({"name":"Mahmoud",})";
+    std::string valid_json = R"({"name":"Mahmoud","age":24})";
+    std::string invalid_json = R"({"name":"Mahmoud",})";
 
-  std::cout << "Valid JSON test: "
-            << (CSimpleJson::is_valid(valid) ? "true" : "false") << std::endl;
+    std::cout << "Valid JSON: "
+              << (CSimpleJson::is_valid(valid_json) ? "true" : "false")
+              << "\n";
 
-  std::cout << "Invalid JSON test: "
-            << (CSimpleJson::is_valid(invalid) ? "true" : "false") << std::endl;
-
-  std::cout << std::endl;
+    std::cout << "Invalid JSON: "
+              << (CSimpleJson::is_valid(invalid_json) ? "true" : "false")
+              << "\n\n";
 }
 
-int main() {
-  std::cout << "=========================================" << std::endl;
-  std::cout << "        Simple JSON Library Tests" << std::endl;
-  std::cout << "=========================================" << std::endl;
+int main()
+{
+    std::cout << "Simple JSON Library Demo\n";
+    std::cout << "========================\n\n";
 
-  std::cout << std::endl;
+    parse_example();
+    build_example();
+    file_io_example();
+    validation_example();
 
-  test_parse_json();
-  test_build_json();
-  test_json_file();
-  test_validation();
+    std::cout << "Done.\n";
 
-  std::cout << "All tests finished." << std::endl;
-
-  return 0;
+    return 0;
 }
