@@ -338,24 +338,6 @@ int main()
 ---
 
 
-# Command Line Tool
-
-A minimal CLI tool is provided to demonstrate querying JSON files.
-
-Build the CLI:
-
-```
-make jcli
-```
-
-Run:
-
-```
-./build/jcli file.json query
-```
-
----
-
 ## Architecture UML
 
 The following diagram shows the architecture of the JSON library.
@@ -435,7 +417,28 @@ CSimpleJson ..> CJsonSerializer
 CJsonParser ..> CJsonValue
 CJsonSerializer ..> CJsonValue
 jcli ..> CSimpleJson
+
 ```
+
+---
+
+# Command Line Tool
+
+A minimal CLI tool is provided to demonstrate querying JSON files.
+
+Build the CLI:
+
+```
+make jcli
+```
+
+Run:
+
+```
+./build/jcli file.json query
+```
+
+---
 
 ## Example JSON
 
